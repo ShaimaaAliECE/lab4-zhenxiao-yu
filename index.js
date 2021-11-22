@@ -5,7 +5,7 @@ const app = express();
 
 const cors = require('cors'); //package for cross origin resource sharing
 const bodyParser = require('body-parser'); //package for body-parser
-const {questions} = require('./src/model/questions');//get questions JSON file
+const {questions} = require('./src/model/questions');//get 'questions' file
 
 
 const port = 80; //port number
