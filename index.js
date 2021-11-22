@@ -5,8 +5,7 @@ const app = express();
 
 const cors = require('cors'); //package for cross origin resource sharing
 const bodyParser = require('body-parser'); //package for body-parser
-const {questions} = require('./src/model/questions');//get 'questions' file
-
+let questions = require('./src/model/questions.json'); //get 'questions' json file
 
 const port = 80; //port number
 const server = `http://localhost:${port}`;
@@ -21,25 +20,20 @@ app.use(bodyParser.json());
 
 
 //APIS
-
-//Test server
-app.get('/', (req, res) => {
-    res.json({"msg":"success"});
-})
+app.use(express.static('./src/frontend'));
 
 //GET all questions
-app.get('/api/', (req, res) => {
+app.get('/questions', (req, res) => {
     res.json(questions);
 })
 
-//GET 1 question
-app.get('/api/:stem', (req,res) => {
+//GET 1 question by stem
+app.get('/questions/:stem', (req,res) => {
     let stem = req.params.stem;
     let record = "no record";
     //if a matching record is found in the question bank, return the index position
     //else return -1
     let index = questions.findIndex( (questions)=>questions.stem == stem )
-
     if (index != -1) {
         record = questions[index]
     }

@@ -1,44 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3316 Lab4 App</title>
-    <link href="css/style.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+    <link href="css/style.css" rel="stylesheet" />
     <!-- reference to jQuery -->
     <script src="scripts/jquery-3.6.0.min.js"></script>
     <!-- reference to frontend script -->
-    <script src="scripts/lab4.js"></script>
-</head>
-<body>
+    <script src="./scripts/script.js"></script>
+  </head>
+  <body>
     <div id="container">
-        <!-- header -->
-        <header>
-            <h1>3316 Lab4: Quiz Tool</h1>
-        </header>
-
-        <form action="/action_page.php">
-            <p>Please select your favorite Web language:</p>
-            <input type="radio" id="html" name="fav_language" value="HTML">
-            <label for="html">HTML</label><br>
-            <input type="radio" id="css" name="fav_language" value="CSS">
-            <label for="css">CSS</label><br>
-            <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-            <label for="javascript">JavaScript</label>
-          
-            <br>  
-          
-            <p>Please select your age:</p>
-            <input type="radio" id="age1" name="age" value="30">
-            <label for="age1">0 - 30</label><br>
-            <input type="radio" id="age2" name="age" value="60">
-            <label for="age2">31 - 60</label><br>  
-            <input type="radio" id="age3" name="age" value="100">
-            <label for="age3">61 - 100</label><br><br>
-            <input type="submit" value="Submit">
-          </form>
-
+      <!-- header -->
+      <header>
+        <h1>3316 Lab4: Quiz Tool</h1>
+      </header>
+      <div id="questionDiv"></div>
     </div>
-</body>
-</html>                                              
+  </body>
+</html>
