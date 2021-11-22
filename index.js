@@ -19,15 +19,17 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 
-//APIS
+//get html template
 app.use(express.static('./src/frontend'));
+
+//define API
 
 //GET all questions
 app.get('/questions', (req, res) => {
     res.json(questions);
 })
 
-//GET 1 question by stem
+//GET 1 question by their stem
 app.get('/questions/:stem', (req,res) => {
     let stem = req.params.stem;
     let record = "no record";
