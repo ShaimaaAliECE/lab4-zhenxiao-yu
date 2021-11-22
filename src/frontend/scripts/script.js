@@ -1,107 +1,129 @@
 //load questions when page renders
-loadQuestions();
+populateQuestions();
 
 //load quiz questions from backend
-function loadQuestions() {
+function populateQuestions() {
+  //new AJAX request
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", "/questions", true);
-  xhr.send();
-  // xhr.onreadystatechange = renderQuestions;
+  xhr.open("GET", "/questions", true); //using GET, is asynchronous 
+  xhr.send(); //send request
   xhr.onreadystatechange = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       let question_block = document.getElementById("question_block");
       //parse question.JSON as question banks
       let qBank = JSON.parse(xhr.responseText);
-      //define empty page content
-      let content = "";
-      content += "<div id='grade'></div>";
-      content += "<form action=javascript:loadGrade()>";
+      //define empty page page
+      let page = "";
+      page += "<div id='grade'></div>";
+      page += "<form action=javascript:displayGrade()>";
       //iterate through each question in question bank
       for (question of qBank) {
         //fill in each label with question text
-        content += "<label class='question_text'>" + question.stem + "</label>";
+        page += "<label class='question_text'>" + question.stem + "</label>";
+        //question response
+        page += "   " + "<span id='ans_section " + question.stem + "'></span>";
         //fill in each option
         for (option of question.options) {
           //create correct number of radio buttons based on the size of options
           //option button
-          content +=
+          page +=
             '<ul><input type="radio" id="answer ' +
             option +
             '" name="' +
             question.stem +
-            '" onclick=loadAnswer()>';
+            '" onclick=provideFeedback()>';
           //option label
-          content += '<label for="answer ' + option + '">' + option + "</label></ul>";
+          page += '<label for="answer ' + option + '">' + option + "</label></ul>";
         }
-        //question response
-        content += "<div id='answerDiv " + question.stem + "'></div>";
         //division line to format questions
-        content += "<hr>";
+        page += "<hr>";
       }
-  
-      content += '</br><input type="submit" value="Submit" id="submit">';
-      content += "</form>";
-  
-      question_block.innerHTML = content;
+      //submit button
+      page += '</br><input type="submit" value="Submit" id="submit">';
+      //wrap questions in form
+      page += "</form>";
+      //populate html page
+      question_block.innerHTML = page;
     }
   };
+  //error handler
   xhr.error = () => { console.log("Error, could not retrieve question") };
 }
 
-//load quiz answers from backend
-function loadAnswer() {
+//provide instant feedback to user when a radio button is selected
+function provideFeedback() {
+  //new AJAX request
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", "/questions", true);
-  xhr.send();
+  xhr.open("GET", "/questions", true); //using GET, is asynchronous 
+  xhr.send(); //send request
   xhr.onreadystatechange = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      //parse question.JSON as question banks
       let qBank = JSON.parse(xhr.responseText);
-  
+      // define empty feedback content
       for (question of qBank) {
         let feedback = "";
-        let answerDiv = document.getElementById("answerDiv " + question.stem);
+        let ans_section = document.getElementById("ans_section " + question.stem);
         let radioButtons = document.getElementsByName("" + question.stem);
-  
+        //iterate through radio buttons
         for (let i = 0; i < radioButtons.length; i++) {
-          if (radioButtons[i].checked == true) {
-            if (i == question.answerIndex) feedback = "Correct!";
-            else feedback = "Incorrect!";
+          if (radioButtons[i].checked) { //check radio buttons that are selected
+            if (i == question.answerIndex) { //see if answer matches the answer index
+              feedback = `<span class="right">Correct<span>`;
+            }
+            else {
+              feedback = `<span class="wrong">Incorrect<span>`;
+            };
           }
         }
-        answerDiv.innerHTML = feedback;
+        //update feedback every time a radio button is selected
+        ans_section.innerHTML = feedback;
       }
     }
   };
+  //error handler
   xhr.error = () => { console.log("Error, could not retrieve answer") };
 }
 
 //load the grade
-function loadGrade() {
-  let submitBtn = document.getElementById("submit");
-  submitBtn.remove();
+function displayGrade() {
+  //new AJAX request
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", "/questions", true);
-  xhr.send();
+  xhr.open("GET", "/questions", true); //using GET, is asynchronous 
+  xhr.send(); //send request
+
+  //disable submit button after pressed
+  const submit = document.getElementById("submit");
+  submit.remove();
+
   xhr.onreadystatechange = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      //parse question.JSON as question banks
       let qBank = JSON.parse(xhr.responseText);
+      //get reference to the grade section
       let grade = document.getElementById("grade");
-      let correctAnswers = 0;
-      let totalQuestions = 0;
-  
+      let correct_count = 0;
+      let total = 0;
+      //iterate through the questions
       for (question of qBank) {
         let radioButtons = document.getElementsByName("" + question.stem);
   
         for (let i = 0; i < radioButtons.length; i++) {
           if (radioButtons[i].checked == true) {
-            if (i == question.answerIndex) correctAnswers++;
+            if (i == question.answerIndex) { //see if answer matches the answer index
+              //increase the number of correct answers
+              correct_count++;
+            }
           }
         }
-        totalQuestions++;
+        //count the total number of questions
+        total++;
       }
+      //display the final grade to the user 
       grade.innerHTML =
-      "You answered " + correctAnswers + "/" + totalQuestions + " questions correctly. (" + 100*(correctAnswers / totalQuestions) + "%)";
+      "You answered " + correct_count + "/" + total + " questions correctly. (" + 100*(correct_count / total) + "%)";
     }
   };
+  //error handler
   xhr.error = () => { console.log("Error, could not retrieve grade") };
 }

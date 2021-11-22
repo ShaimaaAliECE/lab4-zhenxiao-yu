@@ -1,3 +1,5 @@
+/* css file for static quiz page */
+
 body{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin:0;
@@ -42,6 +44,25 @@ ul {
     list-style: none;
     padding: 0;
     margin-left: 10%;
+}
+
+.right{
+    background-color: green;
+    padding: 3px;
+    font-size: medium;
+    border:1.5px solid black;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.wrong{
+
+    background-color: red;
+    padding: 3px;
+    font-size: medium;
+    border:1.5px solid black;
+    border-radius: 3px;
+    color: #fff;
 }
 
 
