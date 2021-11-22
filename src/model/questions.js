@@ -1,4 +1,4 @@
-[
+const questions = [
     {
         "stem": "The argument to the jQuery function MUST be a string.",
         "options": ["True","False"],
@@ -29,3 +29,5 @@
         "answerIndex": 1
     }
 ]
+
+module.exports.questions = questions;
