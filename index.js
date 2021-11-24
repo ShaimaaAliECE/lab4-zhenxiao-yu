@@ -17,27 +17,38 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}));
 //parsing JSON as questions are stored in JSON file
 app.use(bodyParser.json());
-
-
-//get html template
+//get html static template
 app.use(express.static('./src/frontend'));
 
-//define API
+//define APIs
 
 //GET all questions
 app.get('/questions', (req, res) => {
     res.json(questions);
-})
+});
 
 //GET 1 question by their stem
-app.get('/questions/:stem', (req,res) => {
-    let stem = req.params.stem;
-    let record = "no record";
-    //if a matching record is found in the question bank, return the index position
-    //else return -1
-    let index = questions.findIndex( (questions)=>questions.stem == stem )
-    if (index != -1) {
-        record = questions[index]
+// app.get('/questions/:stem', (req,res) => {
+//     let stem = req.params.stem;
+//     let record = "no record";
+//     //if a matching record is found in the question bank, return the index position
+//     //else return -1
+//     let index = questions.findIndex( (questions)=>questions.stem == stem )
+//     if (index != -1) {
+//         record = questions[index]
+//     }
+//     res.json(record);
+// })
+
+//GET feedback for question
+app.get("/feedback", (req, res) => {
+    let msg = "Incorrect" + req.query.id;
+    let questionID = 0;
+    for (question of questions){
+        if(req.query.id == questionID && req.query.value == question.answerIndex) {
+            msg = "Correct" + req.query.id;
+        }
+        questionID++;
     }
-    res.json(record);
-})
+    res.send(msg);
+});
