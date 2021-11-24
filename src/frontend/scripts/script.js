@@ -28,8 +28,6 @@ function populateQuestions() {
         let q_val = 0;
         //fill in each label with question text
         page += `<label class='question_text' id = ${q_id} value = "incorrect">${question.stem}</label>`;
-        //question response
-        page += "   " + "<span id='ans_section " + question.stem + "'></span>";
 
         //fill in each option
         for (option of question.options) {
